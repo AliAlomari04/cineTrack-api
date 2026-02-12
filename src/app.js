@@ -27,7 +27,7 @@ app.use('/api/v1',v1Router)
 app.all(/(.*)/ , (req,res,next) =>{
     next(new AppError(`Can't find ${req.originalUrl} on the server!`,404))
 })
-app.get('/health' , (req,res)=>{
+app.get(['/','/health'] , (req,res)=>{
     res.status(200).json({
         status:"Up" ,
         message: "Server is healthy !"
