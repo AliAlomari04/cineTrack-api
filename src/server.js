@@ -5,7 +5,7 @@ import { connectDB } from "./config/db.js";
 
 config();
 
-const port =process.env.PORT || 10000;
+const port =process.env.PORT;
 
 connectDB().then(()=>{
 app.listen(port , ()=>{
