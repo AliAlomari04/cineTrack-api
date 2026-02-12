@@ -11,12 +11,12 @@ app.listen(port, '0.0.0.0' , ()=>{
     console.log(`App is running on : ${port}`);
 })
 
-connectDB().then(()=>{
-    console.log("DB connected successfully");
+// connectDB().then(()=>{
+//     console.log("DB connected successfully");
     
-}).catch((err)=>{
-    console.log("Failed to connect ", err);
+// }).catch((err)=>{
+//     console.log("Failed to connect ", err);
     
-})
+// })
 
     
