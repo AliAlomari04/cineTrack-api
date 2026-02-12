@@ -10,12 +10,7 @@ const port =process.env.PORT || 5000;
 app.listen(port, '0.0.0.0' , ()=>{
     console.log(`App is running on : ${port}`);
 })
-app.get(['/', '/health'], (req, res) => {
-    res.status(200).json({
-        status: "Up",
-        message: "Server is healthy and running! 🚀"
-    });
-});
+
 // connectDB().then(()=>{
 //     console.log("DB connected successfully");
     
