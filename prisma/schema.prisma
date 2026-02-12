@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+ 
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model user{
+  id String @id @default(uuid())
+  name String
+  email String @unique
+  password String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isDeleted Boolean @default(false)
+
+  @@index([email])
+
+  watchlist watchlistItem[]
+}
+
+enum watchlistStatus{
+  PLANNED
+  WATCHING
+  COMPLETED
+  DROPPED
+}
+model movie{
+  id String @id @default(uuid())
+  tmdbId String
+  title String
+  overview String? @db.Text //عشان النص الطويل
+  releaseYear Int
+  posterUrl String?
+  runtime Int? //حتكون بالدفائق
+
+  //POSTGRES SPECIFIC: ARRAY OF THINGS
+  genres String[]
+
+  // Twists
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isDeleted Boolean @default(false)
+
+  watchlistItems watchlistItem[]
+
+  // فهرس للسنة والعنوان عشان الفلترة
+  @@index([releaseYear])
+  @@index([title])
+  @@unique([tmdbId])
+  
+}
+
+model watchlistItem{
+  id String @id @default(uuid())
+  status watchlistStatus @default(PLANNED)
+  rating Int?
+  notes String?
+
+  // Relations
+  userId String
+  users user @relation(fields: [userId], references: [id])
+
+  movieId String
+  movies movie @relation(fields: [movieId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Preventing the user from adding the same movie twice
+  @@unique([userId, movieId])
+
+  // Filtering the use's watchlist
+  @@index([userId])
+}
