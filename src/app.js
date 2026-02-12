@@ -12,7 +12,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.json());
 
-// ✅ Health Check (أهم سطر عشان Render يضل أخضر)
 app.get(['/', '/health'], (req, res) => {
     res.status(200).json({
         status: "Up",
@@ -28,7 +27,6 @@ v1Router.use("/movies", movieRouter);
 
 app.use('/api/v1', v1Router);
 
-// ✅✅✅ التعديل هنا: استخدام /(.*)/ بدل *
 app.all(/(.*)/, (req, res, next) => {
     next(new AppError(`Can't find ${req.originalUrl} on the server!`, 404));
 });
